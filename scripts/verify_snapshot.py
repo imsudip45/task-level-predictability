@@ -38,7 +38,9 @@ REQUIRED = [
     "docs/selector_results.md",
     "docs/evaluation_protocol.md",
     "docs/task_fingerprint_spec.md",
-    "docs/primitive_pins_dg.md",
+    "docs/primitive_pins.md",
+    "docs/reproducibility.md",
+    "CHANGELOG.md",
     "docs/validity_audit.md",
     "paper/main.pdf",
     "paper/latex/main.tex",
@@ -69,7 +71,7 @@ REQUIRED = [
 
 FIGURES = [
     "figure1_pipeline.pdf",
-    "figure2_latency_quality.pdf",
+    "figure2_heterogeneity.pdf",
     "figure3_prediction.pdf",
     "figure4_error_difference.pdf",
     "figure5_esci.pdf",
@@ -195,12 +197,52 @@ def main() -> int:
             if needle not in source:
                 errors.append(f"make_figures.py does not point at {needle}")
 
-    if errors:
-        print("snapshot check failed:")
-        for item in errors:
-            print(f"  {item}")
+    checks = [
+        ("freeze identifiers", not any(item.startswith("FREEZE.md") or "freeze" in item or item.startswith("fingerprint protocol") for item in errors)),
+        ("performance_p0_p1.json", (ROOT / "results/raw/performance_p0_p1.json").is_file() and not any("performance_p0_p1.json" in item for item in errors)),
+        ("performance_dg.json", (ROOT / "results/raw/performance_dg.json").is_file() and not any("performance_dg.json" in item for item in errors)),
+        ("selector_sd1.json", (ROOT / "results/raw/selector_sd1.json").is_file() and not any("selector_sd1.json" in item for item in errors)),
+        ("fingerprint.json", (ROOT / "data/fingerprint/fingerprint.json").is_file() and not any("fingerprint.json" in item or item.startswith("fingerprint protocol") for item in errors)),
+        ("SMS rule SHA-256", (ROOT / "configs/sms_rule.txt").is_file() and not any("sms rule" in item or "sms_rule.txt" in item for item in errors)),
+        ("public index files contain no text fields", not any("banned field" in item or "row ids" in item or "PMID" in item or "json parse" in item for item in errors)),
+        ("five figures", not any("figure" in item for item in errors)),
+        ("paper/main.pdf", pdf.is_file() and pdf.stat().st_size > 0),
+    ]
+
+    print("Task-Level Predictability — Snapshot Verification")
+    print()
+    failed = False
+    for label, ok in checks:
+        status = "PASS" if ok else "FAIL"
+        if not ok:
+            failed = True
+        print(f"[{status}] {label}")
+    other = [item for item in errors if not any(
+        token in item
+        for token in (
+            "FREEZE.md",
+            "freeze",
+            "fingerprint",
+            "performance_p0_p1.json",
+            "performance_dg.json",
+            "selector_sd1.json",
+            "sms",
+            "banned field",
+            "row ids",
+            "PMID",
+            "json parse",
+            "figure",
+            "paper/main.pdf",
+        )
+    )]
+    for item in other:
+        failed = True
+        print(f"[FAIL] {item}")
+    print()
+    if failed or errors:
+        print("Snapshot verification: FAIL")
         return 1
-    print("snapshot check passed")
+    print("Snapshot verification: PASS")
     return 0
 
 

@@ -1,13 +1,25 @@
-# Freeze
+# Frozen Research Snapshot
 
-This snapshot records the measurement frozen on 26 September 2026. It does not refit the selector and it does not rerun primitives to improve results.
+This repository is a public snapshot of the experiment identified by:
 
-| Identifier | What it freezes |
-| --- | --- |
-| FPS-1 | Fingerprint measurement rules |
-| FPS-2 | Candidate list after BFCL-simple was removed |
-| EP-1 | Evaluation protocol: rows, metrics, classifier, SMS rule |
-| ST-1 | Selector target |
-| SD-1 | Selector design and the fitted ridge result in `results/raw/selector_sd1.json` |
+- FPS-1
+- FPS-2
+- EP-1
+- ST-1
+- SD-1
 
-The public copy is a reproduction package for that freeze. Scores in `results/raw/` are the copied outputs. `scripts/verify_snapshot.py` checks that those bytes are intact. It does not recompute them.
+Freeze date: 2026-09-26
+
+## Freeze policy
+
+The published numerical results are copied from the frozen experiment. They are not recomputed during repository preparation.
+
+No selector hyperparameter was retuned after observing the predictive results.
+
+No primitive was rerun to improve its result.
+
+No additional interaction terms were added after observing Table 4.
+
+No additional experiment is required to interpret this snapshot.
+
+The copied scores remain at `results/raw/` because the measurement and selector scripts resolve that directory. `scripts/verify_snapshot.py` checks those bytes. It does not refit the selector.

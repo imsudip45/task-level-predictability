@@ -1,12 +1,19 @@
-# Licenses
+# Licensing
 
-The MIT License in this repository applies to the project's source code and scripts only. Other materials are licensed as described below. Third-party datasets, models, tokenizers, and other external materials are not relicensed by this repository and remain subject to their respective licenses and terms.
+## Source code
 
-| Material | License |
-| --- | --- |
-| Source code under `src/` and scripts under `scripts/` | MIT, see `LICENSE` |
-| Paper (`paper/`), documentation (`docs/`, `README.md`, `FREEZE.md`, `LIMITATIONS.md`), figures, and derived research artifacts under `results/` and `data/fingerprint/` | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
-| Raw benchmark texts | Absent from this snapshot. They keep the licenses of their original releases. See `docs/datasets.md`. |
-| Qwen, Laya, tokenizers, and other third-party model or software artifacts | Their own licenses. This repository does not redistribute those weights. |
+Source code and scripts in this repository are licensed under the MIT License. See `LICENSE`.
 
-The MIT file does not relicense the paper, the figures, the frozen results, the datasets, or any third-party model.
+## Paper and research artifacts
+
+The manuscript, documentation, figures, tables, and derived research artifacts are licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+## Third-party material
+
+Benchmark datasets, model checkpoints, tokenizers, and other third-party materials are not relicensed by this repository.
+
+They remain subject to their original licenses and terms.
+
+Raw benchmark texts are not redistributed here.
+
+The MIT License does not relicense the paper, the figures, the frozen results, the datasets, or any third-party model.

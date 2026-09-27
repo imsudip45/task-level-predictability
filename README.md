@@ -1,69 +1,128 @@
-# Task-level predictability
+# Task-Level Predictability for Heterogeneous Decision Primitives
 
-Can a static fingerprint of a task predict which decision primitive will be closer on quality and on invalid outputs, before that primitive is run on the task?
+**An eight-task pilot of task-level predictability for heterogeneous decision primitives**
 
-This repository is the frozen eight-task pilot. The primitives are a written SMS rule, a TF-IDF logistic-regression classifier, Laya, and Qwen2.5-0.5B-Instruct. The selector is a ridge model fit under SD-1. ESCI is scored and is held out of every selector fit.
+[Paper PDF](paper/main.pdf) ·
+[ORCID: Sudip Niroula](https://orcid.org/0009-0009-8886-114X) ·
+[ORCID: Mandip Pokharel](https://orcid.org/0009-0000-9454-7012)
 
-On the held-out tasks, the ridge predictor was closer than the training-fold mean on macro-F1 for 5 of 8 tasks, and closer on the invalid rate for 2 of 8 tasks. The classifier was the primitive selected on every held-out task. On ESCI, ridge reduced macro-F1 error from 0.2825 to 0.1024 and invalid-rate error from 0.1199 to 0.0444, and the selected primitive stayed the classifier.
+## Research status
 
-## What this repository does not claim
+**Status:** Frozen pilot / public research snapshot
 
-- Task fingerprints are generally predictive.
-- The classifier is universally best.
-- The experiment is a validated routing system.
-- The reported latencies are hardware-normalized.
-- One Laya checkpoint or one Qwen checkpoint represents its model family.
+The experiment is complete and the reported results are frozen. This repository accompanies the manuscript and supports inspection of the published analysis.
 
-## Hardware
+Future experiments, if any, should be treated as separate versions or follow-up studies rather than modifications of these frozen results.
 
-The rule, the classifier, and Laya ran on CPU. Qwen ran in float16 on a GTX 1650 Ti.
+## Overview
 
-## Repository
+This repository contains the frozen research artifacts for an eight-task pilot study asking whether measurable properties of a bounded decision task, computed before primitive evaluation, can predict the quality and operational behavior of different computational primitives.
 
-https://github.com/imsudip45/task-level-predictability
+The evaluated primitive families are:
 
-No DOI is assigned.
+- deterministic rule
+- conventional TF-IDF + logistic-regression classifier
+- typed decision model (Laya)
+- generative language model (Qwen2.5-0.5B-Instruct)
 
-## Layout
+The study predicts a seven-coordinate performance profile:
 
-| Path | Contents |
+- macro-F1
+- local training time
+- local inference time
+- API cost
+- p50 latency
+- p95 latency
+- invalid-output rate
+
+## Main findings
+
+In this frozen eight-task pilot:
+
+- the task fingerprint was closer than the primitive-specific mean on macro-F1 for 5 of 8 held-out tasks;
+- it was closer on invalid-output rate for 2 of 8 tasks;
+- all vector-based policies selected the conventional classifier on every held-out task;
+- on the ESCI e-commerce holdout, macro-F1 prediction error decreased from 0.2825 to 0.1024 and invalid-rate error from 0.1199 to 0.0444, without changing the selected primitive;
+- Qwen's invalid-output rate ranged from 0.023 to 1.000 across the evaluated tasks.
+
+## Interpretation
+
+This repository does not present a validated routing system.
+
+The experiment found substantial task-dependent variation among the evaluated implementations, but the frozen fingerprint did not reliably improve prediction over the primitive-specific training-fold mean.
+
+The study therefore should be read as a measurement pilot rather than as evidence that task fingerprints are generally predictive.
+
+The repository also does not claim that the classifier is universally best, that the reported latencies are hardware-normalized, or that one Laya checkpoint or one Qwen checkpoint represents its model family.
+
+## Repository contents
+
+| Path | Purpose |
 | --- | --- |
-| `paper/main.pdf` | Built manuscript |
-| `paper/latex/` | LaTeX sources and the five figure PDFs |
-| `paper/figures/` | The same figure bytes |
-| `results/raw/` | Frozen performance JSON, selector JSON, and evaluation-row indices |
-| `data/fingerprint/` | Frozen fingerprint and training-row identifiers |
-| `src/` | Selector fit, primitive measurement, and fingerprint code |
-| `configs/sms_rule.txt` | Frozen SMS rule |
-| `docs/` | Protocol records and dataset sources |
-| `scripts/verify_snapshot.py` | Integrity check |
-| `scripts/make_figures.py` | Redraws figures from `results/raw/` |
+| `paper/` | Manuscript, LaTeX source, and frozen figures |
+| `results/raw/` | Frozen measured scores, selector output, and evaluation-row indices |
+| `data/fingerprint/` | Public task fingerprint and training-row identifiers |
+| `src/` | Measurement and selector source code |
+| `configs/` | Frozen SMS rule |
+| `docs/` | Dataset, protocol, pin, and reproducibility documentation |
+| `scripts/` | Figure redraw and snapshot verification |
 
-## Check the snapshot
+`results/raw/` keeps that name because `src/selector/fit_sd1.py` and `src/primitives/measure_p0_p1.py` resolve it. These files are frozen derived results, not a dump of benchmark text. Renaming the directory would require editing those scientific scripts, so the path is unchanged.
+
+## Data availability
+
+Raw benchmark texts are not redistributed in this repository.
+
+The experiments use publicly available benchmark datasets obtained from their respective official sources. Users must obtain those datasets independently and comply with their applicable licenses and terms.
+
+This repository contains derived task-level artifacts such as fingerprints, indices, measured scores, counts, latencies, and configuration information, subject to the exclusions documented in `LICENSES.md`.
+
+Dataset sources, splits, transformations, and the C100k cap are in [docs/datasets.md](docs/datasets.md).
+
+## Hardware and runtime conditions
+
+The frozen measurements were produced under the following conditions:
+
+| Primitive | Device |
+| --- | --- |
+| Rule | CPU |
+| TF-IDF + logistic regression | CPU |
+| Laya | CPU |
+| Qwen2.5-0.5B-Instruct | NVIDIA GTX 1650 Ti, float16 |
+
+Latency excludes model-load time.
+
+These measurements are deployment-specific and are not intended as hardware-normalized comparisons of intrinsic primitive speed.
+
+API cost is zero because no API was called.
+
+## Inspect the published analysis
 
 ```bash
 python scripts/verify_snapshot.py
 ```
 
-That script checks files, hashes, JSON, and freeze identifiers. It does not recompute scores.
+That command checks repository integrity. It does not recompute scores.
 
-Redrawing the figures needs matplotlib and numpy:
+Redrawing Figures 1–5 needs matplotlib and numpy:
 
 ```bash
 pip install -r requirements-figures.txt
 python scripts/make_figures.py
 ```
 
-`scripts/make_figures.py` reads `results/raw/` and writes `paper/latex/figures/`, then copies those PDF bytes to `paper/figures/`. It does not refit the selector and it does not run inference.
+`scripts/make_figures.py` redraws Figures 1–5 from the frozen JSON artifacts. It does not refit the selector or rerun any primitive.
 
-Full primitive reruns need the original datasets and are not the default command. Raw benchmark text is not in this repository. See `docs/datasets.md`.
+Re-running the full measurement requires obtaining the original datasets and satisfying their licenses and preprocessing requirements. That is not the default command.
+
+The manuscript is [paper/main.pdf](paper/main.pdf). The public repository is https://github.com/imsudip45/task-level-predictability. No DOI is assigned.
 
 ## Licenses
 
-MIT applies to source code and scripts only. The paper, documentation, figures, and derived research artifacts are CC BY 4.0. Datasets, Qwen, Laya, and tokenizers keep their own licenses. See `LICENSES.md`.
+MIT applies to source code and scripts only. The manuscript, documentation, figures, and derived research artifacts are CC BY 4.0. Datasets, Qwen, Laya, and tokenizers keep their own licenses. See [LICENSES.md](LICENSES.md).
 
 ## Citation
 
-See `CITATION.cff`. Version 1.0.0, released 2026-09-26.
+See [CITATION.cff](CITATION.cff). Version 1.0.0, released 2026-09-27. The experiment freeze date is 2026-09-26.
 
 Sudip Niroula and Mandip Pokharel. *An eight-task pilot of task-level predictability for heterogeneous decision primitives.* 2026.
