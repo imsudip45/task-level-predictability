@@ -1,6 +1,6 @@
 # Task-Level Predictability for Heterogeneous Decision Primitives
 
-**An eight-task pilot of task-level predictability for heterogeneous decision primitives**
+**An eight-task pilot study of task-level predictability for heterogeneous decision primitives**
 
 [Paper PDF](paper/main.pdf) ·
 [ORCID: Sudip Niroula](https://orcid.org/0009-0009-8886-114X) ·
@@ -125,4 +125,4 @@ MIT applies to source code and scripts only. The manuscript, documentation, figu
 
 See [CITATION.cff](CITATION.cff). Version 1.0.0, released 2026-09-27. The experiment freeze date is 2026-09-26.
 
-Sudip Niroula and Mandip Pokharel. *An eight-task pilot of task-level predictability for heterogeneous decision primitives.* 2026.
+Sudip Niroula and Mandip Pokharel. *An eight-task pilot study of task-level predictability for heterogeneous decision primitives.* 2026.
