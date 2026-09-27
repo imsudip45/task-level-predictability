@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: If you use this snapshot, please cite it.
+type: software
+title: An eight-task pilot of task-level predictability for heterogeneous decision primitives
+authors:
+  - given-names: Sudip
+    family-names: Niroula
+    orcid: "https://orcid.org/0009-0009-8886-114X"
+  - given-names: Mandip
+    family-names: Pokharel
+    orcid: "https://orcid.org/0009-0000-9454-7012"
+version: 1.0.0
+date-released: 2026-09-26

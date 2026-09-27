@@ -1,0 +1,94 @@
+\section{Results}
+\label{sec:results}
+
+\subsection{Heterogeneity}
+\label{sec:heterogeneity}
+
+\Cref{tab:performance} is the performance matrix. Blank primitive--task pairs were not eligible. Nothing in the table was filled with zero in place of a missing run. Cfull and C100k are the classifier. Device is part of the record.
+
+\input{tables/performance_matrix}
+\input{tables/validity_table}
+\FloatBarrier
+
+Macro-F1 on SMS Spam runs from 0.2067 (Qwen) to 0.9393 (classifier), with the rule at 0.8576 and Laya at 0.7822. On Banking77 the classifier reaches 0.8508 and Qwen 0.1316. On LEDGAR the classifier reaches 0.7418 and Qwen 0.0281. The ordering is not the same on every task. On PubMedQA, Laya's macro-F1 is 0.3128 and the classifier's is 0.2691. On Civil Comments, Laya's is 0.7367 and the C100k classifier's is 0.6298. On VitaminC, the classifier (0.3826) is ahead of Qwen (0.2209) and Laya (0.2165), and Qwen's invalid rate is only 0.023, so that gap is mostly legal predictions. We do not collapse these rows into a ranking.
+
+Local inference time and latency are not comparable across devices. Classifier p50 latency is under 0.3\,ms on every task. Laya's p50 on CPU runs from 698.7\,ms on SMS Spam to 5212\,ms on Banking77. Qwen's p50 on the GTX 1650 Ti runs from 323.5\,ms on SMS Spam to 1336.6\,ms on CLINC150 plus. Those numbers characterize the deployments we ran. They do not establish which primitive is intrinsically faster. API dollars do not vary.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/figure2_latency_quality.pdf}
+\caption{Measured macro-F1 against median latency on a log scale, one marker per eligible pair in \cref{tab:performance}. Marker shape is the primitive. Color is the invalid-output rate. The rule, the classifier, and Laya are CPU timings. Qwen is the GTX 1650 Ti in float16. There is no trend line and no confidence band.}
+\label{fig:latency-quality}
+\end{figure}
+\FloatBarrier
+
+Training seconds are nonzero only for the classifier, from 0.295\,s on SMS Spam to 139.867\,s on LEDGAR. The C100k fits are 19.757\,s (Civil Comments), 15.300\,s (VitaminC), and 77.896\,s (ESCI).
+
+\subsection{Prediction against the primitive mean}
+\label{sec:prediction}
+
+\Cref{tab:selector} is the task-level mean absolute error. Each cell averages the eligible primitives both predictors could fill. For the security holdout that set excludes the rule.
+
+\input{tables/selector_errors}
+
+Ridge is closer on macro-F1 for PubMedQA, VitaminC, SMS Spam, LEDGAR, and ESCI. It is farther on Banking77, CLINC150 plus, and Civil Comments. Ridge is closer on the invalid rate only for LEDGAR and ESCI.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/figure3_prediction.pdf}
+\caption{Predicted versus measured macro-F1, and predicted versus measured invalid rate, for held-out pairs both predictors filled. The diagonal is equality. Open circles are ridge. Crosses are the training-fold mean.}
+\label{fig:prediction}
+\end{figure}
+\FloatBarrier
+
+\begin{samepage}
+Median-latency error is smaller for ridge on four tasks and smaller for the mean on four. Those errors are hundreds of milliseconds. They are reported in the result file and are not a hardware-normalized comparison. API-dollar error is 0 for both predictors on every task, because every measured value is 0. That tie is not evidence of predictive skill.
+\par
+\end{samepage}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/figure4_error_difference.pdf}
+\caption{Ridge absolute error minus training-fold-mean absolute error, for macro-F1 and for the invalid rate. A negative bar means ridge was closer. The panel describes these eight tasks. It is not an inferential interval.}
+\label{fig:error-difference}
+\end{figure}
+\FloatBarrier
+
+On the fit that uses all seven selector-training tasks, the largest macro-F1 coefficients are the primitive indicators: Qwen \(-0.385\) and Laya \(-0.134\), against an intercept of 0.593. The largest fingerprint coefficient on that coordinate is normalized entropy, \(-0.065\). On the invalid rate, the Qwen indicator is \(+0.306\) and the largest fingerprint coefficient is mean label cosine, \(+0.113\). The fingerprint enters as a shift applied to every primitive. Invalid outputs in this matrix occur for Qwen. A shared shift cannot raise Qwen's invalid rate on a particular kind of task without also raising the classifier and Laya, whose invalid rates are 0.
+
+The three largest held-out Qwen invalid rates were predicted in the wrong direction. Banking77, CLINC150 plus, and Civil Comments have rates 0.514, 0.745, and 1. The unclipped ridge predictions were \(-0.009\), \(-0.073\), and \(-0.039\), and the unit clip made them 0. The primitive mean remained near 0.29. The mean is closer because it retains the average Qwen failure. The fingerprint shift removes it.
+
+The verification holdout is also a coverage fact. PubMedQA and VitaminC are the only \path{paired_text} tasks in the selector-training pool. Holding them out leaves the relation bit constant, so the column is zeroed. The fit cannot use a structural distinction that the training fold does not contain.
+
+\subsection{Choice}
+\label{sec:choice}
+
+On every held-out task, and on all four policies that read a vector, the ridge profile and the primitive mean select the same primitive. That primitive is the classifier.
+
+The measured oracle, using the same rules on the measured profile, also selects the classifier except in three cases. These cases are not successes of the predictor. They show that the objective changes the preferred primitive, and that neither predictor tracked that change.
+\begin{itemize}
+\item Highest macro-F1 on PubMedQA selects Laya: 0.3128 versus 0.2691 for the classifier.
+\item Highest macro-F1 on Civil Comments selects Laya: 0.7367 versus 0.6298 for the C100k classifier.
+\item Lowest p50 latency on SMS Spam selects the rule: 0.020\,ms versus 0.188\,ms for the classifier. The security fold has no rule row in training, so neither predictor can offer a rule.
+\end{itemize}
+
+Equal weights and shared weights select the classifier on every task, including when they read the measured profile. After min-max scaling on the training tasks, Laya's latency occupies the top of the range. The gap between the rule and the classifier is small beside it, and on SMS Spam the classifier has higher macro-F1.
+
+ESCI is the domain holdout. Ridge reduces macro-F1 error from 0.2825 to 0.1024 and invalid-rate error from 0.1199 to 0.0444. Every vector policy still selects the classifier, which is also the oracle's selection. A closer profile did not change the decision. We do not describe this as generalization of a selector to e-commerce.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.72\linewidth]{figures/figure5_esci.pdf}
+\caption{ESCI only. Macro-F1 error is 0.2825 for the training-fold mean and 0.1024 for ridge. Invalid-rate error is 0.1199 and 0.0444. Both predictors and the oracle select the classifier.}
+\label{fig:esci}
+\end{figure}
+\FloatBarrier
+
+\subsection{Generative validity}
+\label{sec:validity}
+
+\Cref{tab:validity} is the main validity result. The rule, the classifier, and Laya produce no invalid outputs. Qwen's rate depends on the task.
+
+On Civil Comments every one of the 1{,}000 outputs is invalid, so macro-F1 is 0. That zero is a measured contract failure, not a hand-entered score. On Banking77 and CLINC150 plus, invalid outputs are 514 and 745 of 1{,}000 rows, so macro-F1 there is mostly a parse outcome. On SMS Spam, VitaminC, and ESCI, invalid outputs are 25, 23, and 32 of 1{,}000 rows. Macro-F1 on those tasks is mostly the legal predictions, and it is still low relative to the classifier (0.2067, 0.2209, and 0.0358).
+
+The raw strings that failed the match were not saved. We cannot say whether they were explanations, extra words, or misspelled labels. We can say they were not exact legal labels under the pin. A later pass could store the strings. Changing the prompt, the decoder, or the parser to reduce \(V\) would be a different primitive.

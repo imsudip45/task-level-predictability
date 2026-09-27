@@ -1,0 +1,36 @@
+\section{Reproducibility}
+\label{sec:reproducibility}
+
+Freeze identifiers are FPS-1, FPS-2, EP-1, ST-1, and SD-1, dated 26~September 2026. The fingerprint manifest, performance matrix, and selector reading are
+\begin{center}
+\begin{tabular}{@{}l@{}}
+\texttt{research/docs/numerical\_fingerprint\_manifest.md}\\
+\texttt{research/docs/performance\_matrix.md}\\
+\texttt{research/docs/selector\_results.md}
+\end{tabular}
+\end{center}
+The matrix is generated from
+\begin{center}
+\begin{tabular}{@{}l@{}}
+\texttt{research/results/raw/performance\_p0\_p1.json}\\
+\texttt{research/results/raw/performance\_dg.json}
+\end{tabular}
+\end{center}
+The selector fit and its output are
+\begin{center}
+\begin{tabular}{@{}l@{}}
+\texttt{research/src/selector/fit\_sd1.py}\\
+\texttt{research/results/raw/selector\_sd1.json}
+\end{tabular}
+\end{center}
+Figures are
+\begin{center}
+\texttt{research/paper/make\_figures.py},
+\end{center}
+which reads those JSON files and does not refit the model. The SMS rule file and its hash are in \cref{sec:primitives}. Tokenizer and encoder revisions are in \cref{sec:fingerprint}. Raw corpora are local and are not redistributed with this draft. ESCI product-text provenance is stated in \cref{sec:datasets}.
+
+\ifanonymous
+The public repository URL is omitted from this anonymous build.
+\else
+A public repository URL is not stated in the source manuscript. When one exists, replace the following placeholder: \url{https://github.com/USERNAME/REPOSITORY}.
+\fi

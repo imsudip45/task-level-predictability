@@ -1,0 +1,98 @@
+% Named production manuscript.
+% Anonymous build: latexmk -pdf anonymous.tex
+% Do not put machine-specific paths in this file.
+\makeatletter
+\@ifundefined{ifanonymous}{\newif\ifanonymous\anonymousfalse}{}
+\makeatother
+
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{enumitem}
+\usepackage[round,authoryear]{natbib}
+\usepackage[hidelinks]{hyperref}
+\renewcommand{\theHtable}{\thetable}
+\makeatletter
+\def\UrlBigBreaks{\do@url@hyp}
+\g@addto@macro{\UrlBreaks}{\do\/\do\.\do\-\do\_}
+\g@addto@macro{\UrlNoBreaks}{\do\:}
+\let\paperorigurl\url
+\renewcommand{\url}[1]{\leavevmode\penalty-50 \paperorigurl{#1}}
+\makeatother
+\usepackage[capitalise,noabbrev,nameinlink]{cleveref}
+
+\setlist[enumerate]{leftmargin=2.6em,labelwidth=2.1em,labelsep=0.5em,itemsep=0.45em,parsep=0pt,topsep=0.4em}
+\crefname{figure}{Figure}{Figures}
+\Crefname{figure}{Figure}{Figures}
+\crefname{table}{Table}{Tables}
+\Crefname{table}{Table}{Tables}
+\crefname{section}{Section}{Sections}
+\Crefname{section}{Section}{Sections}
+
+\newcommand{\authoronename}{Sudip Niroula}
+\newcommand{\authoroneaffil}{Independent Researcher}
+\newcommand{\authoroneorcid}{0009-0009-8886-114X}
+\newcommand{\authoroneemail}{sudip.785421@memc.tu.edu.np}
+\newcommand{\authortwoname}{Mandip Pokharel}
+\newcommand{\authortwoaffil}{Independent Researcher}
+\newcommand{\authortwoorcid}{0009-0000-9454-7012}
+\newcommand{\correspondingauthor}{\authoronename}
+
+\newcommand{\paperdate}{26 September 2026}
+\hyphenation{Bandyopadhyay Thompson}
+
+\title{An eight-task pilot of task-level predictability for heterogeneous decision primitives}
+
+\ifanonymous
+  \author{Anonymous authors}
+\else
+  \author{%
+    \authoronename\\
+    \authoroneaffil\\
+    ORCID: \href{https://orcid.org/0009-0009-8886-114X}{\authoroneorcid}%
+    \and
+    \authortwoname\\
+    \authortwoaffil\\
+    ORCID: \href{https://orcid.org/0009-0000-9454-7012}{\authortwoorcid}%
+  }
+\fi
+\date{\paperdate}
+
+\begin{document}
+\maketitle
+
+\ifanonymous
+\else
+\noindent Corresponding author: \correspondingauthor\ (\href{mailto:sudip.785421@memc.tu.edu.np}{\authoroneemail}).
+\fi
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+\noindent\textit{Keywords:} bounded decisions; task fingerprint; computational primitives; measurement pilot.
+
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/methodology}
+\input{sections/datasets}
+\input{sections/results}
+\input{sections/limitations}
+\input{sections/discussion}
+\input{sections/conclusion}
+\input{sections/reproducibility}
+\input{sections/author_contributions}
+
+\FloatBarrier
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

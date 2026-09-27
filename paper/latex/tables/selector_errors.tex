@@ -1,0 +1,21 @@
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption{Held-out absolute error, ridge versus the training-fold primitive mean. Each cell averages the eligible primitives both predictors could fill. For the security holdout that set excludes the rule. Source: \protect\path{research/docs/selector_results.md}.}
+\label{tab:selector}
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Holdout & Task & \(Q\) ridge & \(Q\) mean & \(V\) ridge & \(V\) mean \\
+\midrule
+Intent & Banking77 & 0.2112 & 0.1090 & 0.1713 & 0.0725 \\
+Intent & CLINC150 plus & 0.1623 & 0.1232 & 0.2483 & 0.1495 \\
+Verification & PubMedQA & 0.2583 & 0.2785 & 0.0792 & 0.0420 \\
+Verification & VitaminC & 0.2096 & 0.2688 & 0.2839 & 0.1503 \\
+Moderation & Civil Comments & 0.2075 & 0.1880 & 0.3333 & 0.2366 \\
+Security & SMS Spam & 0.2271 & 0.2619 & 0.2832 & 0.1426 \\
+Business / legal & LEDGAR & 0.1562 & 0.1684 & 0.1131 & 0.1188 \\
+E-commerce & ESCI & 0.1024 & 0.2825 & 0.0444 & 0.1199 \\
+\bottomrule
+\end{tabular}
+\end{table}

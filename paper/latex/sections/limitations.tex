@@ -1,0 +1,31 @@
+\section{Limitations}
+\label{sec:limitations}
+
+The task sample contains eight tasks. Intent and verification contain two tasks each. Moderation, security, and business/legal contain one. The e-commerce domain contains one held-out task. Leave-one-family-out in this sample is often leave-one-task-out. Example counts inside Banking77 or Civil Comments do not repair that.
+
+The rule exists on one task. When that task is held out, the rule cannot be predicted. One Laya checkpoint and one Qwen checkpoint stand for their primitive families. Another decision model or another generative model could behave differently. In particular, grammar-constrained decoding can remove structural invalidity~\citep{chavan2026}. This study did not use it.
+
+Latency is tied to the device that produced it. A smaller Qwen latency is not evidence that generation is cheaper than Laya in general, because Laya ran on CPU. We do not rerun the CPU primitives on GPU after seeing the matrix. Doing so would replace the frozen measurement with a second condition chosen after the outcome.
+
+API dollars are identically zero. The study does not estimate a dollar price for local hardware and does not compare against a paid API. Training-time comparisons are dominated by the fact that only the classifier is fit on the task.
+
+C100k is not full-data training. Civil Comments' classifier macro-F1 of 0.6298, VitaminC's 0.3826, and ESCI's 0.2189 are scores of the capped fits. The fingerprint's training size still records the full training split.
+
+The fingerprint omits documented shift wherever the code is unspecified or blank. It has no primitive-specific slope. A shuffled-fingerprint control was discussed in an early audit note and was not part of the frozen predictor specification. The control that was run is the primitive mean. We do not add the shuffled control, or an interaction term, after seeing \cref{tab:selector}.
+
+The literature screen is incomplete in the sense recorded above. A closer paper could still sit in an index we did not successfully query.
+
+\section{Threats to validity}
+\label{sec:threats}
+
+\paragraph{Construct.}
+Macro-F1, with an invalid row counted as wrong, records whether the bounded decision matched the reference label, including contract failures. \(V\) records whether the output was a legal label. Reporting only one of them would mix those questions. We report both. Accuracy is not \(Q\). On Civil Comments the C100k classifier's accuracy is 0.929 and its macro-F1 is 0.6298, from \path{research/results/raw/performance_p0_p1.json}. That gap is why macro-F1 is the quality coordinate.
+
+\paragraph{Internal.}
+The same evaluation rows and the same input string are used for every primitive on a task. The generative device differs. Seeded subsamples for length and for C100k are pre-registered. ESCI product text is not the undownloaded official products file; the row identity is the official examples file. A reader who needs bit-identical product strings must use the documented tasksource join.
+
+\paragraph{External.}
+One generative configuration and one decision-model checkpoint do not represent their families. The label sets are closed. The study does not speak to multilabel decisions, tool use, or open-ended generation. ESCI is one e-commerce task, not a domain sample.
+
+\paragraph{Statistical.}
+The selector's \(n\) is the number of tasks in a fold, not the number of evaluation rows. Holding out intent leaves five training tasks. Holding out a singleton leaves six. Coefficients from a fit with more fingerprint columns than tasks are descriptive of that fit. We do not interpret them as stable partial effects beyond the sign pattern already stated: primitive indicators are larger than individual fingerprint coefficients on the seven-task fit.

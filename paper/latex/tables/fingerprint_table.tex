@@ -1,0 +1,47 @@
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\thetable}{1a}
+\caption{Training size, imbalance, and relation. Lengths are in \cref{tab:fingerprint-b}. Imbalance uses the full training split. Entropy is normalized entropy. The source file is named in \cref{sec:reproducibility}.}
+\label{tab:fingerprint-a}
+\begin{tabular}{@{}llrrrrll@{}}
+\toprule
+Task & Family & Train rows & \(K\) & Entropy & Max/min & Relation & Selector \\
+\midrule
+Banking77 & Intent & 10003 & 77 & 0.9920 & 5.343 & utterance & yes \\
+CLINC150 plus & Intent & 15250 & 151 & 0.9990 & 2.500 & utterance & yes \\
+Civil Comments & Moderation & 1804874 & 2 & 0.4021 & 11.505 & utterance & yes \\
+SMS Spam & Security & 4458 & 2 & 0.5681 & 6.467 & utterance & yes \\
+LEDGAR & Business / legal & 60000 & 100 & 0.9348 & 137.696 & utterance & yes \\
+PubMedQA fold 0 & Verification & 450 & 3 & 0.8516 & 5.082 & paired text & yes \\
+VitaminC & Verification & 370653 & 3 & 0.9030 & 3.505 & paired text & yes \\
+ESCI & E-commerce & 1393063 & 4 & 0.6228 & 33.310 & paired text & no \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\thetable}{1b}
+\caption{Input length and label-name similarity. Lengths for Civil Comments and ESCI are on the pre-registered 20{,}000-row sample. Entropy in \cref{tab:fingerprint-a} is normalized entropy.}
+\label{tab:fingerprint-b}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Task & Median tokens & P95 tokens & Mean cosine & Min cosine \\
+\midrule
+Banking77 & 11.0 & 35.0 & 0.2011 & $-0.1309$ \\
+CLINC150 plus & 9.0 & 15.0 & 0.1342 & $-0.1968$ \\
+Civil Comments & 46.0 & 201.0 & 0.5701 & 0.5701 \\
+SMS Spam & 18.0 & 53.0 & 0.2830 & 0.2830 \\
+LEDGAR & 104.0 & 379.0 & 0.2194 & $-0.1086$ \\
+PubMedQA fold 0 & 319.5 & 490.1 & 0.5272 & 0.4000 \\
+VitaminC & 45.0 & 89.0 & 0.2113 & 0.1966 \\
+ESCI & 213.0 & 805.0 & 0.2643 & 0.1075 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\setcounter{table}{1}
+\renewcommand{\thetable}{\arabic{table}}

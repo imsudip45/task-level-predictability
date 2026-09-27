@@ -1,0 +1,40 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3.2pt}
+\caption{Measured profiles. \(Q\) is macro-F1. Train and infer are seconds. API is dollars and is 0 because no API was called. Latency is milliseconds and does not include model load. Invalid is a count. The rule, the classifier, and Laya are CPU. Qwen is a GTX 1650 Ti in float16. C100k marks the pre-registered 100{,}000-row classifier fit. Source: \protect\path{research/docs/performance_matrix.md}.}
+\label{tab:performance}
+\begin{tabular}{@{}llrrrrrrrrr@{}}
+\toprule
+& & & \multicolumn{2}{c}{Time (s)} & & \multicolumn{2}{c}{Latency (ms)} & & & \\
+\cmidrule(lr){4-5}\cmidrule(lr){7-8}
+Task & Primitive & \(Q\) & Train & Infer & API (\$) & p50 & p95 & Invalid & \(n\) & Device \\
+\midrule
+SMS Spam & Rule & 0.8576 & 0.000 & 0.028 & 0 & 0.020 & 0.062 & 0 & 1000 & CPU \\
+SMS Spam & Classifier & 0.9393 & 0.295 & 0.351 & 0 & 0.188 & 0.719 & 0 & 1000 & CPU \\
+SMS Spam & Laya & 0.7822 & 0.000 & 724.349 & 0 & 698.724 & 941.798 & 0 & 1000 & CPU \\
+SMS Spam & Qwen & 0.2067 & 0.000 & 308.276 & 0 & 323.515 & 417.066 & 25 & 1000 & GPU \\
+PubMedQA & Classifier & 0.2691 & 0.635 & 0.194 & 0 & 0.261 & 0.623 & 0 & 500 & CPU \\
+PubMedQA & Laya & 0.3128 & 0.000 & 1019.183 & 0 & 1978.849 & 2842.361 & 0 & 500 & CPU \\
+PubMedQA & Qwen & 0.2327 & 0.000 & 474.746 & 0 & 932.252 & 1239.578 & 174 & 500 & GPU \\
+Banking77 & Classifier & 0.8508 & 2.412 & 0.267 & 0 & 0.184 & 0.456 & 0 & 1000 & CPU \\
+Banking77 & Laya & 0.3888 & 0.000 & 5260.039 & 0 & 5212.193 & 5888.881 & 0 & 1000 & CPU \\
+Banking77 & Qwen & 0.1316 & 0.000 & 1360.532 & 0 & 1274.864 & 1668.698 & 514 & 1000 & GPU \\
+CLINC150 plus & Classifier & 0.8299 & 5.033 & 0.237 & 0 & 0.177 & 0.337 & 0 & 1000 & CPU \\
+CLINC150 plus & Laya & 0.4280 & 0.000 & 4614.129 & 0 & 4584.007 & 4905.017 & 0 & 1000 & CPU \\
+CLINC150 plus & Qwen & 0.2465 & 0.000 & 1455.811 & 0 & 1336.641 & 1980.492 & 745 & 1000 & GPU \\
+LEDGAR & Classifier & 0.7418 & 139.867 & 0.298 & 0 & 0.215 & 0.481 & 0 & 1000 & CPU \\
+LEDGAR & Laya & 0.2088 & 0.000 & 4724.659 & 0 & 4528.972 & 6190.025 & 0 & 1000 & CPU \\
+LEDGAR & Qwen & 0.0281 & 0.000 & 1346.729 & 0 & 1236.580 & 1887.759 & 86 & 1000 & GPU \\
+Civil Comments & Classifier (C100k) & 0.6298 & 19.757 & 0.316 & 0 & 0.196 & 0.628 & 0 & 1000 & CPU \\
+Civil Comments & Laya & 0.7367 & 0.000 & 807.656 & 0 & 726.485 & 1376.470 & 0 & 1000 & CPU \\
+Civil Comments & Qwen & 0.0000 & 0.000 & 544.926 & 0 & 489.657 & 808.857 & 1000 & 1000 & GPU \\
+VitaminC & Classifier (C100k) & 0.3826 & 15.300 & 0.251 & 0 & 0.176 & 0.416 & 0 & 1000 & CPU \\
+VitaminC & Laya & 0.2165 & 0.000 & 797.699 & 0 & 766.750 & 1045.356 & 0 & 1000 & CPU \\
+VitaminC & Qwen & 0.2209 & 0.000 & 603.543 & 0 & 578.279 & 779.076 & 23 & 1000 & GPU \\
+ESCI & Classifier (C100k) & 0.2189 & 77.896 & 0.253 & 0 & 0.181 & 0.394 & 0 & 1000 & CPU \\
+ESCI & Laya & 0.1527 & 0.000 & 1909.519 & 0 & 1444.679 & 4742.117 & 0 & 1000 & CPU \\
+ESCI & Qwen & 0.0358 & 0.000 & 1024.658 & 0 & 922.247 & 2060.757 & 32 & 1000 & GPU \\
+\bottomrule
+\end{tabular}
+\end{table}

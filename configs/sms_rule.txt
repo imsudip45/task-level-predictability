@@ -1,0 +1,1 @@
+(?i)(\bfree\b|\bwinner\b|\bwin\b|\burgent\b|\bprize\b|\bclaim\b|\btxt\b|\bcall now\b|\bwon\b|\bcash\b|\bxxx\b|\bpound\b|£|\bringtone\b|\bsubscription\b|\bcongrat)
