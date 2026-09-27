@@ -13,7 +13,7 @@ C100k does not represent full-data training. Civil Comments' classifier macro-F1
 
 The fingerprint omits documented shift wherever the code is unspecified or blank. It has no primitive-specific slope. A shuffled-fingerprint control was discussed in an early audit note and was not part of the frozen predictor specification. The included baseline is the primitive-specific training-fold mean. We do not add the shuffled control, or an interaction term, after seeing \cref{tab:selector}.
 
-The literature screen is incomplete in the sense recorded above. A closer paper could still sit in an index we did not successfully query.
+The literature screen is incomplete. On 26~September 2026, Semantic Scholar's API returned HTTP 429, and Scopus was not queried. OpenAlex full-text search from 2024 onward was noisy. A closer paper could still sit in an index we did not successfully query.
 
 \section{Threats to validity}
 \label{sec:threats}
@@ -22,7 +22,7 @@ The literature screen is incomplete in the sense recorded above. A closer paper 
 Macro-F1, with an invalid row counted as wrong, records whether the bounded decision matched the reference label, including contract failures. \(V\) records whether the output was a legal label. Reporting only one of them would mix those questions. We report both. Accuracy is not \(Q\). On Civil Comments the C100k classifier's accuracy is 0.929 and its macro-F1 is 0.6298, from \path{research/results/raw/performance_p0_p1.json}. This difference motivates using macro-F1 rather than accuracy as the primary quality coordinate.
 
 \paragraph{Internal.}
-The same evaluation rows and the same input string are used for every primitive on a task. The generative primitive was evaluated on a different device. Seeded subsamples for length and for C100k are pre-registered. ESCI product text was obtained from the documented tasksource join rather than from the incompletely downloaded official products file; the row identity remains that of the official examples file. A reader who needs bit-identical product strings must use the documented tasksource join.
+The same evaluation rows and the same input string are used for every primitive on a task. The generative primitive was evaluated on a different device. The seeded subsamples for input length and the C100k classifier fit were specified before evaluation. ESCI product text was obtained from the documented tasksource join rather than from the incompletely downloaded official products file; the row identity remains that of the official examples file. A reader who needs bit-identical product strings must use the documented tasksource join.
 
 \paragraph{External.}
 One generative configuration and one decision-model checkpoint do not represent their families. The label sets are closed. The study does not speak to multilabel decisions, tool use, or open-ended generation. ESCI is one e-commerce task, not a domain sample.

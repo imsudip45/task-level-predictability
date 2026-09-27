@@ -58,12 +58,12 @@ On the fit that uses all seven selector-training tasks, the largest macro-F1 coe
 
 The three largest held-out Qwen invalid-output rates were underestimated by the ridge predictor. Banking77, CLINC150 plus, and Civil Comments have rates 0.514, 0.745, and 1. The unclipped ridge predictions were \(-0.009\), \(-0.073\), and \(-0.039\), and clipping to the \([0,1]\) interval reduced them to 0. The primitive mean remained near 0.29. The mean is closer because it retains the average level of Qwen's observed failure rate. The fingerprint shift removes it.
 
-The verification holdout is also a coverage fact. PubMedQA and VitaminC are the only \path{paired_text} tasks in the selector-training pool. Holding them out leaves the relation feature constant, so the column is zeroed. The fit cannot use a structural distinction that the training fold does not contain.
+The verification holdout is also a coverage fact. PubMedQA and VitaminC are the only paired-text tasks in the selector-training pool. Holding them out leaves the relation feature constant, so the column is zeroed. The fit cannot use a structural distinction that the training fold does not contain.
 
 \subsection{Choice}
 \label{sec:choice}
 
-On every held-out task, and on all four policies that read a vector, the ridge profile and the primitive mean select the same primitive. That primitive is the classifier.
+On every held-out task, and on all four policies that read a vector, the ridge profile and the primitive mean select the same primitive. In every case, that primitive is the classifier.
 
 The measured oracle, using the same rules on the measured profile, also selects the classifier except in three cases. These cases do not constitute successful predictions, because neither predictor selected the oracle primitive. They show that the objective changes the preferred primitive, and that neither predictor tracked that change.
 \begin{itemize}
@@ -74,7 +74,7 @@ The measured oracle, using the same rules on the measured profile, also selects 
 
 Equal weights and shared weights select the classifier on every task, including when they read the measured profile. After min--max scaling on the training tasks, Laya's latency lies at the high end of the normalized range. The rule--classifier latency difference is small relative to Laya's normalized latency, and on SMS Spam the classifier has higher macro-F1.
 
-ESCI is the single-task e-commerce holdout. Ridge reduces macro-F1 error from 0.2825 to 0.1024 and invalid-rate error from 0.1199 to 0.0444. Every vector policy still selects the classifier, which is also the oracle's selection. A closer profile did not change the decision. We do not interpret this result as evidence of generalization to the e-commerce domain.
+ESCI is the single-task e-commerce holdout. Ridge reduces macro-F1 error from 0.2825 to 0.1024 and invalid-rate error from 0.1199 to 0.0444. Every vector-based policy still selects the classifier, which is also the oracle's selection. A closer profile did not change the decision. We do not interpret this result as evidence of generalization to the e-commerce domain.
 
 \begin{figure}[htbp]
 \centering

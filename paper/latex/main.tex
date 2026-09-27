@@ -1,15 +1,22 @@
 % Named production manuscript.
 % Anonymous build: latexmk -pdf anonymous.tex
+% Typography comes from neurips_2026.sty (preprint). Do not set font sizes here.
 % Do not put machine-specific paths in this file.
 \makeatletter
 \@ifundefined{ifanonymous}{\newif\ifanonymous\anonymousfalse}{}
 \makeatother
 
-\documentclass[11pt]{article}
+\documentclass{article}
+
+\PassOptionsToPackage{round,authoryear}{natbib}
+\usepackage[preprint]{neurips_2026}
+% The arXiv record already identifies the preprint. Drop the style's first-page "Preprint." notice.
+\makeatletter
+\renewcommand{\@notice}{}
+\makeatother
 
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage[margin=1in]{geometry}
+\usepackage{courier}
 \usepackage{microtype}
 \usepackage{amsmath}
 \usepackage{booktabs}
@@ -17,7 +24,6 @@
 \usepackage{graphicx}
 \usepackage{placeins}
 \usepackage{enumitem}
-\usepackage[round,authoryear]{natbib}
 \usepackage[hidelinks]{hyperref}
 \renewcommand{\theHtable}{\thetable}
 \makeatletter
@@ -46,39 +52,32 @@
 \newcommand{\authortwoorcid}{0009-0000-9454-7012}
 \newcommand{\correspondingauthor}{\authoronename}
 
-\newcommand{\paperdate}{26 September 2026}
 \hyphenation{Bandyopadhyay Thompson}
 
-\title{An eight-task pilot study of task-level predictability for heterogeneous decision primitives}
+\title{An Eight-Task Pilot Study of Task-Level Predictability for Heterogeneous Decision Primitives}
 
 \ifanonymous
   \author{Anonymous authors}
 \else
   \author{%
-    \authoronename\\
-    \authoroneaffil\\
-    ORCID: \href{https://orcid.org/0009-0009-8886-114X}{\authoroneorcid}%
-    \and
-    \authortwoname\\
-    \authortwoaffil\\
-    ORCID: \href{https://orcid.org/0009-0000-9454-7012}{\authortwoorcid}%
+    \authoronename\thanks{Corresponding author: \href{mailto:sudip.785421@memc.tu.edu.np}{\authoroneemail}.} \\
+    \authoroneaffil \\
+    ORCID: \href{https://orcid.org/0009-0009-8886-114X}{\authoroneorcid}
+    \And
+    \authortwoname \\
+    \authortwoaffil \\
+    ORCID: \href{https://orcid.org/0009-0000-9454-7012}{\authortwoorcid}
   }
 \fi
-\date{\paperdate}
 
 \begin{document}
 \maketitle
-
-\ifanonymous
-\else
-\noindent Corresponding author: \correspondingauthor\ (\href{mailto:sudip.785421@memc.tu.edu.np}{\authoroneemail}).
-\fi
 
 \begin{abstract}
 \input{sections/abstract}
 \end{abstract}
 
-\noindent\textit{Keywords:} bounded decisions, task fingerprint, computational primitives, measurement pilot
+\noindent\textbf{Keywords:} bounded decisions, task fingerprint, task-level model selection, text classification, typed decision models, generative language models, output validity
 
 \input{sections/introduction}
 \input{sections/related_work}
