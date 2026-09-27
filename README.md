@@ -18,9 +18,9 @@ On the held-out tasks, the ridge predictor was closer than the training-fold mea
 
 The rule, the classifier, and Laya ran on CPU. Qwen ran in float16 on a GTX 1650 Ti.
 
-## Repository URL
+## Repository
 
-`paper/latex/` still contains the manuscript placeholder `https://github.com/USERNAME/REPOSITORY`. That URL is not assigned. Replace it, and rebuild `paper/main.pdf`, before any public release. Do not publish a PDF that still contains `USERNAME/REPOSITORY`.
+https://github.com/imsudip45/task-level-predictability
 
 No DOI is assigned.
 
