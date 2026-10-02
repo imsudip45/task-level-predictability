@@ -2,56 +2,55 @@
 
 ## SAFE OR POTENTIALLY SAFE CLAIMS
 
-All claims below are conditional on experimental results and bounded by the scope of the literature search conducted.
+All safe claims must remain conditional on experimental verification and bounded by the literature corpus reviewed:
 
-- **Claim:** "In the literature verified by this review, no included study was found that jointly performs pre-deployment task-level prediction across classical classifiers, fine-tuned encoders, and generative language models while treating output-contract validity and selection regret as first-class outcomes."
-  - *Supporting prior-work comparison:* PsyMatrix uses only fine-tuned PLMs. ModelLens uses open-source pretrained models without operational outcomes. LLM routing benchmarks (LLMRouterBench, RouterBench) operate at query level with homogeneous LLM portfolios. auto-sklearn uses classical models without text or LLMs.
-  - *Additional evidence required:* Must build and evaluate such a benchmark. Must confirm through deeper search that no industrial or unpublished work addresses this combination.
-  - *Confidence level:* Moderate. This is a bounded search finding, not proof of universal nonexistence.
+- **Claim 1 (Cross-Family Task-Level Portfolio):**
+  *Wording:* “In the literature verified by this review, no included study was found that jointly performs pre-deployment task-level prediction across classical classifiers, fine-tuned encoders, and generative language models while evaluating system-selection regret across quality, latency, and monetary cost.”
+  *Supporting prior work:* PsyMatrix (Monteiro et al., 2024) evaluates only fine-tuned PLMs. ModelLens (Cai et al., 2026) evaluates open-source foundation models without operational cost/latency. LLMRouterBench (Li et al., 2026) operates at the query level on LLMs only. auto-sklearn (Feurer et al., 2015) operates on tabular data.
+  *Evidence required:* Empirical demonstration of a unified benchmark spanning all three system families.
+  *Confidence level:* **Moderate**. Bounded search finding; industrial or domain-specific benchmarks may exist.
 
-- **Claim:** "This benchmark evaluates the predictability of output contract validity from task characteristics, an outcome not modeled as a predicted variable in the verified prior work."
-  - *Supporting prior-work comparison:* Constrained decoding papers (Lazy-k, Koa, grammar-constrained) enforce validity but do not predict it from dataset-level features. PsyMatrix and ModelLens do not model validity. LLM routing benchmarks do not model validity.
-  - *Additional evidence required:* Must empirically show that validity failure rates vary across tasks and are predictable from task features.
-  - *Confidence level:* Moderate. The gap exists within the verified corpus; it is possible that industrial/application work addresses this.
+- **Claim 2 (Output-Contract Validity as a Predicted Variable):**
+  *Wording:* “This benchmark investigates whether output-contract validity rates across generative and typed decision systems can be predicted from task-level characteristics prior to deployment.”
+  *Supporting prior work:* Constrained decoding methods (Yu et al. 2022, Hemmer et al. 2023, Dai et al. 2026) enforce validity at generation time, but do not predict contract failure as an outcome from dataset meta-features.
+  *Evidence required:* Statistical evidence that task meta-features correlate with and predict contract failure rates on unseen tasks.
+  *Confidence level:* **Moderate**.
 
-- **Claim:** "Our approach demonstrates whether task-level predictions can reduce downstream selection regret compared to static portfolio choices across heterogeneous system families."
-  - *Supporting prior-work comparison:* LLM routing papers measure query-level regret within LLM pools. No verified paper evaluates task-level regret across families including classical models.
-  - *Additional evidence required:* Effect sizes and uncertainty intervals for regret reduction. Negative findings (task features cannot reduce regret) must be reported as a boundary result.
-  - *Confidence level:* Low-Moderate (depends entirely on empirical results).
+- **Claim 3 (Pre-Deployment Regret Reduction):**
+  *Wording:* “Our experiments assess whether pre-deployment task-level meta-features reduce downstream selection regret compared to standard static portfolio choices (such as Single Best on Average or size-based heuristics).”
+  *Supporting prior work:* Regret evaluation is standard in query-level LLM routing (Hu et al. 2024, Li et al. 2026), but has not been established for pre-deployment task-level cross-family selection.
+  *Evidence required:* Effect sizes and confidence intervals demonstrating regret reduction on held-out tasks.
+  *Confidence level:* **Low-to-Moderate** (depends entirely on experimental outcomes; null results must be treated as valid findings).
 
-- **Claim:** "The proposed benchmark design explicitly addresses dataset independence concerns identified in PsyMatrix (Monteiro et al., 2024), where 146 datasets were derived from 11 base datasets."
-  - *Supporting prior-work comparison:* PsyMatrix reports 146 datasets but these are derived from 11 bases, raising independence concerns for outer-fold evaluation.
-  - *Additional evidence required:* Must demonstrate that the proposed study's task selection and evaluation design ensures effective independence (grouping derived variants, preventing cross-fold leakage).
-  - *Confidence level:* High (this is a design choice, not an empirical finding).
+- **Claim 4 (Methodological Independence over PsyMatrix):**
+  *Wording:* “The benchmark design explicitly enforces effective task independence by grouping derived dataset variants to prevent cross-variant leakage, addressing an evaluation limitation present in prior text-dataset characterization studies.”
+  *Supporting prior work:* PsyMatrix utilized 146 datasets derived from 11 base datasets without explicit cross-fold grouping.
+  *Evidence required:* Partitioning protocol documentation demonstrating zero base-dataset overlap across outer folds.
+  *Confidence level:* **High** (structural design property).
+
+---
 
 ## PROHIBITED OR UNSUPPORTED CLAIMS
 
-- **"The first algorithm-selection framework"**
-  - *Why it's unsafe:* Rice formalized this in 1976. The idea is nearly 50 years old.
+The following claims are demonstrably false or scientifically unsupportable based on the verified literature and must be strictly avoided:
 
-- **"The first use of task features for model selection"**
-  - *Why it's unsafe:* Standard practice in AutoML for over a decade (auto-sklearn 2015, Auto-WEKA 2013, Brazdil et al. 1994).
-
-- **"The first NLP model recommender"**
-  - *Why it's unsafe:* PsyMatrix (Monteiro et al., 2024) explicitly does text-dataset characterization for pretrained model recommendation. ModelLens (Cai et al., 2026) handles text tasks at scale.
-
-- **"The first LLM router"**
-  - *Why it's unsafe:* FrugalGPT (2023), RouteLLM (2024), Hybrid LLM (2024), RouterBench (2024), LLMRouterBench (2026), and many others exist.
-
-- **"The first constrained-output classification method"**
-  - *Why it's unsafe:* Constrained decoding for classification is well-established (Yu et al. 2022, Lazy-k 2023, Koa 2024, grammar-constrained decoding 2025).
-
-- **"The first heterogeneous AI benchmark"**
-  - *Why it's unsafe:* Many benchmarks compare classical vs. deep learning models. The claim must be narrowed to the specific combination of classical + encoder + LLM with validity and regret evaluation, and even then stated as a gap finding within the verified corpus.
-
-- **"Universal superiority of any primitive"**
-  - *Why it's unsafe:* The core premise of algorithm selection (Rice 1976) is that no single algorithm dominates.
-
-- **"Generalization beyond bounded single-label decisions"**
-  - *Why it's unsafe:* The study is explicitly restricted to bounded-decision systems. Claims about open-ended generation are unsupported by design.
-
-- **"PsyMatrix features are insufficient for model selection"**
-  - *Why it's unsafe:* Cannot be claimed without empirical comparison using PsyMatrix features as a baseline.
-
-- **"Novelty has been proven by this literature review"**
-  - *Why it's unsafe:* A literature review identifies gaps within the searched corpus. It does not prove that no one has ever done the work.
+1. **“The first algorithm-selection framework”**
+   *Why prohibited:* Rice established the Algorithm Selection Problem in 1976. The field has 50 years of literature.
+2. **“The first use of dataset meta-features for model recommendation”**
+   *Why prohibited:* Standard in AutoML for decades (Brazdil et al. 1994, Pfahringer et al. 2000, Thornton et al. 2013, Feurer et al. 2015).
+3. **“The first NLP dataset characterization or model recommender”**
+   *Why prohibited:* Directly refuted by **PsyMatrix** (Monteiro et al., Findings of EMNLP 2024) and **ModelLens** (Cai et al., 2026).
+4. **“The first LLM router or routing benchmark”**
+   *Why prohibited:* Refuted by RouterBench (2024), LLMRouterBench (ACL 2026 Findings), RouteJudge (2026), FrugalGPT (2023), and RouteLLM (ICLR 2025).
+5. **“The first constrained-output classification method”**
+   *Why prohibited:* Constrained decoding for classification is thoroughly explored in prior literature (Yu et al. 2022, Hemmer et al. 2023, Behzad et al. 2024, Dai et al. 2026).
+6. **“The first heterogeneous AI benchmark”**
+   *Why prohibited:* Broadly claims priority over numerous benchmarks comparing classical ML against neural nets or transformers.
+7. **“Universal superiority of any candidate primitive family”**
+   *Why prohibited:* Violates the No Free Lunch theorem and empirical algorithm selection reality; primitives exhibit distinct trade-offs across data scale, label cardinality, latency, and cost.
+8. **“Generalization beyond bounded single-label decisions”**
+   *Why prohibited:* The study is strictly bounded to single-label categorical decisions. Extending claims to open-ended dialogue, summarization, or free-form reasoning is unsupported.
+9. **“PsyMatrix features are fundamentally defective or uninformative”**
+   *Why prohibited:* Cannot be claimed without empirical ablation comparing psycholinguistic features directly against alternative feature sets.
+10. **“Novelty is proven by the absence of identical papers in our search”**
+    *Why prohibited:* A literature search establishes absence within an auditable sample, not proof of universal nonexistence.

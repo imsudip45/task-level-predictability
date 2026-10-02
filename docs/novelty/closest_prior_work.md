@@ -1,132 +1,167 @@
 # Closest Prior Work
 
-Papers are organized by the dimension of closest overlap.
-
-## A. Closest by task-level methodology
-
-### 1. PsyMatrix: Characterizing Text Datasets with Psycholinguistic Features
-**Monteiro, Karakkaparambil James, Kloft, Fellenz (2024). Findings of EMNLP 2024.**
-
-1. **Question:** Can psycholinguistic features of text datasets enable a meta-learning system to recommend the best pretrained model for fine-tuning?
-2. **Data:** 146 text-classification datasets derived from 11 base datasets; 24 pretrained language models.
-3. **Candidate systems:** 24 pretrained language models (fine-tuned).
-4. **Features:** Psycholinguistic features, topic distributions, complexity measures.
-5. **Outcomes:** Model performance for recommendation.
-6. **Generalization:** Meta-learning evaluation on held-out datasets.
-7. **Selection:** Task-level.
-8. **Regret evaluated:** Not verified.
-9. **Validity modeled:** No.
-10. **Overlap:** This is the closest NLP-specific task-level model recommendation work. It uses dataset features (psycholinguistic) to predict which pretrained model to fine-tune — directly analogous to the proposed task-fingerprint approach.
-11. **Remaining contribution:** PsyMatrix only considers fine-tuned PLMs. It does not include classical classifiers, zero-shot or constrained generative LLMs, and does not model output validity, latency, or selection regret. The 146 datasets are derived from only 11 base datasets, raising dataset independence concerns.
-12. **Novelty impact:** CRITICAL. A reviewer could argue that PsyMatrix already does task-level text-dataset characterization for model recommendation, making the proposed study incremental unless it substantially extends the portfolio, outcomes, and evaluation design.
-
-### 2. ModelLens: Finding the Best for Your Task from Myriads of Models
-**Cai, Mo, Wen, Ma, Zhu, Chen, Chen, Zhao (2026). arXiv:2605.07075.**
-
-1. **Question:** Can a performance-aware latent space rank unseen models on unseen datasets without running candidates on the target data?
-2. **Data:** 1.62M evaluation records spanning 47K models and 9.6K datasets.
-3. **Candidate systems:** Open-source pretrained models at massive scale.
-4. **Features:** Performance-aware latent space over model-dataset-metric tuples (learned from leaderboards).
-5. **Outcomes:** Model performance ranking.
-6. **Generalization:** Held-out tasks; generalizes to text and vision-language.
-7. **Selection:** Task-level.
-8. **Regret evaluated:** No.
-9. **Validity modeled:** No.
-10. **Overlap:** Task-level model recommendation without running candidates on the target; largest scale study found.
-11. **Remaining contribution:** ModelLens does not predict operational behavior (latency, cost, validity). It does not include classical classifiers or constrained LLMs. Selection regret is not a metric.
-12. **Novelty impact:** HIGH. ModelLens demonstrates that task-level model recommendation from dataset features is a maturing field, compressing the space for novel claims.
-
-### 3. auto-sklearn: Efficient and Robust Automated Machine Learning
-**Feurer et al. (2015). NeurIPS.**
-
-1. **Question:** Can meta-learning over dataset features warmstart Bayesian optimization for model selection?
-2. **Data:** 140 OpenML datasets.
-3. **Candidate systems:** Classical classifiers (scikit-learn).
-4. **Features:** Statistical, landmarking, PCA-based meta-features.
-5. **Outcomes:** Accuracy.
-6. **Generalization:** Cross-validation on held-out datasets.
-7. **Selection:** Task-level.
-8. **Regret evaluated:** No.
-9. **Validity modeled:** No.
-10. **Overlap:** Foundational task-level meta-learning for model selection with meta-features.
-11. **Remaining contribution:** Tabular only; no text; no LLMs; no validity; no latency.
-12. **Novelty impact:** Low (different domain, but establishes that the general approach is not novel).
-
-## B. Closest by operational objectives
-
-### 4. LLMRouterBench: A Massive Benchmark and Unified Framework for LLM Routing
-**Li et al. (2026). arXiv:2601.07206.**
-
-1. **Question:** How do routing methods compare under unified evaluation for performance-cost trade-offs?
-2. **Data:** 400K+ instances across 21 datasets, 33 models.
-3. **Candidate systems:** 33 LLMs.
-4. **Features:** Prompt embeddings.
-5. **Outcomes:** Accuracy; enables latency-aware analysis.
-6. **Generalization:** Held-out queries.
-7. **Selection:** Query-level.
-8. **Regret evaluated:** Yes (gap to oracle).
-9. **Validity modeled:** No.
-10. **Overlap:** Multi-objective routing (cost, performance, latency); oracle/regret evaluation; comprehensive benchmarking.
-11. **Remaining contribution:** Query-level, not task-level; homogeneous LLM portfolio; no classical models; no output validity.
-12. **Novelty impact:** HIGH. Demonstrates that multi-objective routing benchmarks are a crowded area. The proposed project must clearly separate task-level from query-level, and heterogeneous from homogeneous.
-
-### 5. RouterBench: A Benchmark for Multi-LLM Routing System
-**Hu et al. (2024). arXiv:2403.12031.**
-
-1. **Question:** Can a theoretical framework and standardized dataset benchmark LLM routers?
-2. **Data:** 405K+ inference outcomes.
-3. **Candidate systems:** LLMs.
-4. **Features:** Query characteristics.
-5. **Outcomes:** Accuracy, cost.
-6. **Generalization:** Held-out queries.
-7. **Selection:** Query-level.
-8. **Regret evaluated:** Yes.
-9. **Validity modeled:** No.
-10. **Overlap:** Routing benchmark design; regret evaluation framework.
-11. **Remaining contribution:** No task-level selection; no classical models; no output validity.
-12. **Novelty impact:** HIGH. Similar to LLMRouterBench.
-
-### 6. FrugalGPT: How to Use Large Language Models While Reducing Cost and Improving Performance
-**Chen, Zaharia, Zou (2023). arXiv:2305.05176.**
-
-1. **Question:** Can LLM cascading reduce cost while maintaining quality?
-2. **Data:** Multiple NLP tasks.
-3. **Candidate systems:** LLM APIs (GPT-4, ChatGPT, etc.).
-4. **Features:** Query text.
-5. **Outcomes:** Accuracy, cost.
-6. **Generalization:** Per-query evaluation.
-7. **Selection:** Query-level (cascade).
-8. **Regret evaluated:** Not verified.
-9. **Validity modeled:** No.
-10. **Overlap:** Cost-aware model selection; foundational LLM routing work.
-11. **Remaining contribution:** Query-level cascade only; no classical models; no task-level prediction; no validity.
-12. **Novelty impact:** Moderate. Foundational but focused narrowly on LLM cascading.
-
-## C. Closest by output-validity treatment
-
-### 7. Constrained Sequence-to-Tree Generation for Hierarchical Text Classification
-**Yu et al. (2022). SIGIR.**
-
-This paper enforces hierarchical label validity via constrained decoding. It is a single-model methodology, not a task-level selector. Relevant as background on output validity enforcement, but does not predict validity from dataset features.
-
-### 8. Lost in Space: Optimizing Tokens for Grammar-Constrained Decoding
-**Hamilton & Mimno (2025). arXiv:2502.14969.**
-
-Addresses grammar-constrained decoding for structured outputs. Demonstrates the "quality tax" of constrained generation. Relevant for understanding why output validity is non-trivial, but not a selection problem.
-
-**No paper in the verified corpus was found that predicts output-contract validity from task-level features before running the model.** This remains the strongest potential gap.
+This review organizes nearest prior work into three distinct dimensions:
+- **A. Closest by task-level methodology** (dataset characterization & cross-task model recommendation)
+- **B. Closest by operational objectives** (cost, latency, and selection regret in model routing)
+- **C. Closest by output-validity treatment** (constrained decoding and contract adherence)
 
 ---
 
-## Comparison Table
+## A. Closest by Task-Level Methodology
 
-| Paper | Selection unit | Candidate portfolio | Predicted outcomes | Validity modeled? | Regret evaluated? | Main overlap | Remaining gap |
+### 1. PsyMatrix: Characterizing Text Datasets with Psycholinguistic Features
+**Marcio Monteiro, Charu Karakkaparambil James, Marius Kloft, Sophie Fellenz (2024)**
+*Findings of the Association for Computational Linguistics: EMNLP 2024*, pages 14977–14990.
+DOI: `10.18653/v1/2024.findings-emnlp.880`. Canonical URL: https://aclanthology.org/2024.findings-emnlp.880/
+
+1. **Question studied:** Can multidimensional psycholinguistic and discourse features of text datasets enable a meta-learning system to recommend optimal or near-optimal pretrained language models (PLMs) for downstream fine-tuning without exhaustive per-dataset trial and error?
+2. **Data used:** 146 text-classification datasets derived from 11 base datasets.
+3. **Candidate systems compared:** 24 pretrained language models fine-tuned on task data.
+4. **Features used:** Psycholinguistic features, topic distributions, and text complexity measures synthesized into low-dimensional dataset embeddings.
+5. **Outcomes predicted:** Model performance (classification accuracy / F1) on target datasets.
+6. **Generalization evaluation:** Meta-learning evaluated on held-out datasets.
+7. **Selection unit:** Task-level (per-dataset model recommendation).
+8. **Selection regret evaluated:** Not explicitly evaluated as downstream dollar/latency regret.
+9. **Output validity modeled:** No (focuses entirely on fine-tuned transformer classification heads).
+10. **Exact overlap with proposed study:** PsyMatrix represents the most direct prior work in task-level text dataset characterization for model recommendation. It computes dataset-level meta-features to predict model suitability before full-scale fine-tuning.
+11. **Remaining defensible contribution:**
+    - **Candidate portfolio heterogeneity:** PsyMatrix is restricted to 24 fine-tuned PLMs (homogeneous encoder family). It does not include sparse classical models (e.g., TF-IDF + Logistic Regression/SVM), rule-based primitives, zero-shot generative LLMs, or grammar-constrained LLMs.
+    - **Operational outcomes:** PsyMatrix does not predict latency, monetary inference cost, or memory overhead.
+    - **Output contract validity:** PsyMatrix does not model schema or format failures.
+    - **Downstream selection regret:** PsyMatrix does not evaluate decision regret on multi-objective frontiers.
+    - **Dataset independence:** PsyMatrix's 146 datasets stem from only 11 base corpora, introducing potential cross-variant contamination that the proposed study must explicitly avoid.
+12. **Novelty threat level:** **CRITICAL**. Reviewers could argue that task-level text dataset meta-features for model recommendation are already established. The proposed project cannot claim novelty for the concept of task-level text characterization; it must emphasize cross-family heterogeneity, operational trade-offs, output validity, and leakage-free dataset independence.
+
+### 2. ModelLens: Finding the Best for Your Task from Myriads of Models
+**Rui Cai, Weijie Jacky Mo, Xiaofei Wen, Qiyao Ma, Wenhui Zhu, Xiwen Chen, Muhao Chen, Zhe Zhao (2026)**
+*arXiv preprint*, arXiv:2605.07075. DOI: `10.48550/arXiv.2605.07075`. Canonical URL: https://arxiv.org/abs/2605.07075
+
+1. **Question studied:** Can an implicit performance-aware latent space learned from historical public leaderboard interactions rank unseen models on unseen datasets without requiring candidate forward passes or fine-tuning on the target dataset?
+2. **Data used:** 1.62M evaluation records spanning 47,000 models and 9,600 datasets.
+3. **Candidate systems compared:** Pretrained models across open-source ecosystems (NLP, vision-language).
+4. **Features used:** Performance-aware latent space over `(model, dataset, metric)` tuples learned via collaborative/graph filtering.
+5. **Outcomes predicted:** Relative performance ranking of models on unseen datasets.
+6. **Generalization evaluation:** Zero-shot evaluation on held-out task leaderboards.
+7. **Selection unit:** Task-level.
+8. **Selection regret evaluated:** No.
+9. **Output validity modeled:** No.
+10. **Exact overlap with proposed study:** Zero-shot task-level performance prediction on unseen datasets without running candidate systems on the target data.
+11. **Remaining defensible contribution:**
+    - ModelLens relies on dense historical leaderboard interaction graphs; it cannot operate on completely novel private tasks lacking leaderboard metadata.
+    - ModelLens does not predict latency, inference compute cost, or memory footprints.
+    - ModelLens does not include classical non-neural classifiers or output-contract constrained decoders.
+    - ModelLens does not treat output-contract failure as a predicted outcome.
+12. **Novelty threat level:** **HIGH**. Demonstrates that large-scale zero-shot task-level model recommendation is active and maturing.
+
+### 3. OOD-Chameleon: Is Algorithm Selection for OOD Generalization Learnable?
+**Liangze Jiang, Damien Teney (2024/2025)**
+*Proceedings of the 42nd International Conference on Machine Learning (ICML 2025)*; *arXiv preprint*, arXiv:2410.02735.
+DOI: `10.48550/arXiv.2410.02735`. Canonical URL: https://arxiv.org/abs/2410.02735
+
+1. **Question studied:** Can dataset descriptors predict which out-of-distribution (OOD) generalization algorithm will perform best on a given dataset without training all candidate models?
+2. **Data used:** Multi-dataset benchmark across synthetic, vision, and language distribution shifts.
+3. **Candidate systems compared:** OOD generalization training algorithms (ERM, IRM, GroupDRO, CORAL, etc.).
+4. **Features used:** Dataset descriptors measuring statistical properties, distribution shift indicators, and sample complexity.
+5. **Outcomes predicted:** Generalization ranking across OOD algorithms.
+6. **Generalization evaluation:** Multi-label classification evaluated on held-out datasets.
+7. **Selection unit:** Task-level (per-dataset algorithm selection).
+8. **Selection regret evaluated:** Evaluates top-k selection accuracy, but not operational cost regret.
+9. **Output validity modeled:** No.
+10. **Exact overlap with proposed study:** Formulates algorithm selection at the dataset level using pre-training dataset features to avoid trial-and-error training.
+11. **Remaining defensible contribution:** OOD-Chameleon selects training algorithms for deep networks, whereas the proposed study selects across radically distinct inference architectures (rules, classical ML, encoders, generative LLMs) under operational and validity constraints.
+12. **Novelty threat level:** **MODERATE**. Establishes modern precedent for learning decision rules from dataset descriptors.
+
+---
+
+## B. Closest by Operational Objectives (Cost, Latency, and Regret)
+
+### 4. LLMRouterBench: A Massive Benchmark and Unified Framework for LLM Routing
+**Hao Li, Yiqun Zhang, Zhaoyan Guo, Chenxu Wang, Shengji Tang, Qiaosheng Zhang, Yang Chen, Biqing Qi, Peng Ye, Lei Bai, Zhen Wang, Shuyue Hu (2026)**
+*Findings of the Association for Computational Linguistics: ACL 2026*, pages 37733–37754.
+DOI: `10.18653/v1/2026.findings-acl.1881`. Canonical URL: https://aclanthology.org/2026.findings-acl.1881/ (arXiv:2601.07206)
+
+1. **Question studied:** How do existing LLM routing strategies compare under a standardized, unified evaluation framework for performance-oriented and performance-cost trade-off routing?
+2. **Data used:** >400,000 instances across 21 NLP datasets.
+3. **Candidate systems compared:** 33 LLMs (proprietary and open-weight).
+4. **Features used:** Query prompt embeddings and task type indicators.
+5. **Outcomes predicted:** Response quality, latency-aware metrics, and serving cost.
+6. **Generalization evaluation:** Evaluated on held-out test queries across 10 routing baselines.
+7. **Selection unit:** **Query-level** (per-instance routing).
+8. **Selection regret evaluated:** **Yes** (extensively analyzes the gap to the theoretical Oracle and model-recall failures).
+9. **Output validity modeled:** No (does not track output contract or formatting compliance).
+10. **Exact overlap with proposed study:** Joint evaluation of quality, cost, and latency; evaluation against an Oracle baseline; selection regret as the key figure of merit.
+11. **Remaining defensible contribution:**
+    - LLMRouterBench is strictly **query-level**, whereas the proposed study is **task-level** (pre-deployment system commitment).
+    - LLMRouterBench operates exclusively on homogeneous LLMs; it completely omits deterministic rules, sparse classical classifiers, and fine-tuned encoders.
+    - LLMRouterBench does not treat output validity as a predicted variable or operational failure mode.
+12. **Novelty threat level:** **HIGH**. Shows that multi-objective routing benchmarks with oracle regret are thoroughly established in the query-level LLM space.
+
+### 5. RouterBench: A Benchmark for Multi-LLM Routing System
+**Qitian Jason Hu, Jacob Bieker, Xiuyu Li, Nan Jiang, Benjamin Keigwin, Gaurav Ranganath, Kurt Keutzer, Shriyash Kaustubh Upadhyay (2024)**
+*arXiv preprint*, arXiv:2403.12031. DOI: `10.48550/arXiv.2403.12031`. Canonical URL: https://arxiv.org/abs/2403.12031
+
+1. **Question studied:** How can multi-LLM routing systems be systematically assessed through a formal theoretical framework and standardized inference dataset?
+2. **Data used:** Over 405,000 inference outcomes across representative LLMs.
+3. **Candidate systems compared:** Multiple commercial and open-source LLMs.
+4. **Features used:** Query difficulty, domain classification, and embedding features.
+5. **Outcomes predicted:** Accuracy and monetary inference cost.
+6. **Generalization evaluation:** Held-out query partitions.
+7. **Selection unit:** **Query-level**.
+8. **Selection regret evaluated:** **Yes** (regret against optimal routing policy).
+9. **Output validity modeled:** No.
+10. **Exact overlap with proposed study:** Theoretical formalization of router regret and cost-accuracy trade-offs.
+11. **Remaining defensible contribution:** Query-level rather than task-level; homogeneous LLM portfolio; no classical models; no output contract modeling.
+12. **Novelty threat level:** **HIGH**.
+
+### 6. RouteJudge: An Open Platform for Reproducible and Preference-Aware LLM Routing
+**Guannan Lai, Haoran Hu, Han-Jia Ye (2026)**
+*arXiv preprint*, arXiv:2606.18774. Accepted at Pluralistic Alignment Workshop at ICML 2026 (non-archival).
+DOI: `10.48550/arXiv.2606.18774`. Canonical URL: https://arxiv.org/abs/2606.18774
+
+1. **Question studied:** How can routing systems be evaluated online using pairwise user preferences while tracking cost, latency, and task metadata?
+2. **Data used:** Online human pairwise preference feedback and benchmark query sets.
+3. **Candidate systems compared:** LLMs evaluated via the ORBIT toolbox.
+4. **Features used:** Query text, task metadata, and router decision traces.
+5. **Outcomes predicted:** Preference alignment, cost, and latency.
+6. **Generalization evaluation:** Online platform deployment.
+7. **Selection unit:** **Query-level**.
+8. **Selection regret evaluated:** Yes, via preference regret.
+9. **Output validity modeled:** No.
+10. **Exact overlap with proposed study:** Explicit multi-objective tracking of cost, latency, and task metadata.
+11. **Remaining defensible contribution:** Online query-level preference evaluation for LLMs, differing from pre-deployment task-level algorithm selection across architectural families.
+12. **Novelty threat level:** **MODERATE**.
+
+---
+
+## C. Closest by Output-Contract Validity
+
+### 7. Koa-action: Fast and Consistent Structured Decision Making with Generative LLMs
+**Shenghong Dai, Shiva Kumar Pentyala, Yingchi Liu, Shubham Mehrotra, Suman Banerjee, James Zhu, Bin Bi, Sitaram Asur, Phil Mui (2026)**
+*arXiv preprint*, arXiv:2609.36115. DOI: `10.48550/arXiv.2609.36115`. Canonical URL: https://arxiv.org/abs/2609.36115
+
+1. **Question studied:** Can bounded decision-making (classification, intent routing, Boolean checks) be formulated as single-step constrained generation with atomic label tokens to achieve low latency and format adherence?
+2. **Data used:** Production intent-routing benchmarks and standard classification sets.
+3. **Candidate systems compared:** Generative LLMs with atomic single-token decoding vs. multi-token prompting and specialized classifiers.
+4. **Features used:** Text inputs and atomic control tokens.
+5. **Outcomes predicted:** Deterministic label emission, sub-second latency, and classification accuracy.
+6. **Generalization evaluation:** Benchmark evaluation on intent routing.
+7. **Selection unit:** Instance-level generation mechanism.
+8. **Selection regret evaluated:** No.
+9. **Output validity modeled:** **Yes** (guaranteed via atomic special-token vocabulary restriction).
+10. **Exact overlap with proposed study:** Direct analysis of the speed, validity, and quality trade-offs of constrained generative classification.
+11. **Remaining defensible contribution:** Koa-action is a model-level decoding technique, not a cross-system task-level recommender. It proves that constrained decoders exist as viable candidates in our proposed portfolio.
+12. **Novelty threat level:** **LOW** (supports portfolio candidate feasibility rather than competing as a selector).
+
+---
+
+## Summary Comparison Matrix
+
+| Paper | Selection Unit | Candidate Portfolio | Predicted Outcomes | Validity Modeled? | Regret Evaluated? | Main Overlap | Remaining Gap |
 |---|---|---|---|---|---|---|---|
-| PsyMatrix (Monteiro et al. 2024) | Task | 24 fine-tuned PLMs | Performance | No | Not verified | Text dataset features → model recommendation | No classical/LLMs; no validity/latency/regret |
-| ModelLens (Cai et al. 2026) | Task | 47K models | Performance ranking | No | No | Task-level recommendation at scale | No operational behavior; no validity/regret |
-| LLMRouterBench (Li et al. 2026) | Query | 33 LLMs | Accuracy, latency, cost | No | Yes | Multi-objective routing benchmark | Query-level; homogeneous; no validity |
-| RouterBench (Hu et al. 2024) | Query | LLMs | Accuracy, cost | No | Yes | Routing benchmark design | Query-level; homogeneous; no validity |
-| FrugalGPT (Chen et al. 2023) | Query | LLM APIs | Accuracy, cost | No | Not verified | Cost-aware model cascading | Query-level; LLM-only; no validity |
-| auto-sklearn (Feurer et al. 2015) | Task | Classical classifiers | Accuracy | No | No | Task-level meta-learning | No text; no LLMs; no validity/latency |
-| Yu et al. 2022 | Instance | 1 model | Labels | Yes (enforced) | No | Validity enforcement | Not selection; single model |
-| Hamilton & Mimno 2025 | Instance | 1 model | Valid sequences | Yes (enforced) | No | Grammar constraint methodology | Not selection; single model |
+| **PsyMatrix** (Monteiro et al. 2024) | Task | 24 fine-tuned PLMs | Performance (F1/Acc) | No | Not verified | Task features → NLP model recommendation | Homogeneous PLMs; no classical or LLMs; no latency/cost/validity; dataset independence concern |
+| **ModelLens** (Cai et al. 2026) | Task | 47K pretrained models | Performance ranking | No | No | Zero-shot task-level performance prediction | No operational behavior (latency/cost); no classical models; no validity or regret |
+| **OOD-Chameleon** (Jiang & Teney 2025) | Task | OOD training algorithms | Generalization rank | No | Top-k only | Learning decision rules from dataset descriptors | Focuses on training algorithms; no inference cost/latency; no validity; no LLMs |
+| **LLMRouterBench** (Li et al. 2026) | Query | 33 LLMs | Quality, latency, cost | No | Yes (Oracle gap) | Multi-objective routing benchmark & regret | Query-level; LLMs only; no classical models; no output contract modeling |
+| **RouterBench** (Hu et al. 2024) | Query | LLMs | Quality, cost | No | Yes | Theoretical routing regret & benchmarking | Query-level; LLMs only; no classical models; no output validity |
+| **RouteJudge** (Lai et al. 2026) | Query | LLMs | Preference, cost, latency | No | Yes | Multi-objective tracking & task metadata | Query-level; online preference focus; LLMs only; no validity |
+| **Koa-action** (Dai et al. 2026) | Instance | Generative LLMs | Latency, label accuracy | Yes (enforced) | No | Single-token constrained classification | Method-level decoding; not a task-level selector across families |

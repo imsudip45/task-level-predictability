@@ -3,111 +3,80 @@
 ## Search date
 2026-10-03
 
-## Databases
+## Database reporting and statuses
 
-| Database | Status |
-|---|---|
-| Google Scholar | directly searched |
-| Semantic Scholar | directly searched |
-| arXiv | directly searched |
-| ACL Anthology | directly searched |
-| OpenAlex | directly searched (via web search aggregation) |
-| DBLP | not searched |
-| Crossref | not searched |
-| Publisher/conference websites | directly searched (NeurIPS, ICLR, ICML proceedings pages) |
+Only standard allowed status categories are used: `directly_searched`, `indirectly_represented`, `inaccessible`, `not_searched`.
 
-## Search queries by database
+| Database | Status | Interface / Endpoint Used | Search Date | Relevant Query IDs | Notes |
+|---|---|---|---|---|---|
+| Google Scholar | directly_searched | Web search interface | 2026-10-03 | Q15, Q16, Q17, Q18, Q19, Q20 | Direct keyword and author queries |
+| Semantic Scholar | directly_searched | Web interface & API search queries | 2026-10-03 | Q21, Q22, Q23, Q24, Q25 | Direct paper and citation lookups |
+| arXiv | directly_searched | arXiv search interface & direct URL lookup | 2026-10-03 | Q01, Q02, Q03, Q04, Q05, Q06, Q07, Q08, Q09, Q10 | Direct abstract and metadata queries |
+| ACL Anthology | directly_searched | ACL Anthology search interface & canonical record URLs | 2026-10-03 | Q11, Q12, Q13, Q14 | Direct lookups for PsyMatrix, LLMRouterBench, and constrained decoding |
+| NeurIPS Proceedings | directly_searched | Direct site lookup (proceedings.neurips.cc) | 2026-10-03 | Q26, Q27 | auto-sklearn, MetaOD |
+| ICML Proceedings | directly_searched | Direct site lookup (icml.cc / PMLR) | 2026-10-03 | Q23, Q34 | OOD-Chameleon, Bardenet 2013 |
+| ACM Digital Library | directly_searched | Direct interface search (dl.acm.org) | 2026-10-03 | Q28 | Auto-WEKA, Smith-Miles |
+| ScienceDirect | directly_searched | Direct DOI resolution & ScienceDirect retrieval | 2026-10-03 | Q29 | Rice 1976 |
+| SpringerLink | directly_searched | Direct DOI resolution & SpringerLink retrieval | 2026-10-03 | Q30, Q31, Q32 | Brazdil 1994, Abdulrahman 2018, Reif 2012 |
+| IEEE Xplore | directly_searched | Direct DOI resolution & IEEE retrieval | 2026-10-03 | Q33 | Ho & Basu 2002 |
+| PMLR | directly_searched | Direct proceedings search (proceedings.mlr.press) | 2026-10-03 | Q34 | ICML proceedings |
+| JMLR | directly_searched | Direct journal search (jmlr.org) | 2026-10-03 | Q35 | AlphaD3M 2021 |
+| OpenAlex | indirectly_represented | Indexed in aggregator search results (no direct standalone search) | 2026-10-03 | None | Represented indirectly |
+| DBLP | not_searched | None | 2026-10-03 | None | Not directly searched |
+| Crossref | not_searched | None | 2026-10-03 | None | Not directly searched |
 
-### arXiv (direct URL verification)
-- "algorithm selection" "meta-learning" "dataset features"
-- "NLP dataset characteristics" "model selection" OR "performance prediction"
-- "LLM routing" benchmark cost latency
-- "classifier" "LLM" selection routing
-- "constrained decoding" "classification" labels
-- "text dataset model recommendation meta learning"
-- "NLP dataset meta features model selection"
-- "text classification performance prediction dataset characteristics"
-- "psycholinguistic dataset features model recommendation"
-- "pretrained model recommendation text classification"
-- "classical classifier versus LLM model selection"
-- "route between classifier and language model"
-- "hybrid classifier LLM routing"
-- "predict structured output validity language model"
-- "invalid label generation text classification LLM"
-- "schema compliance prediction language model"
-- "per dataset algorithm selection regret"
-- "meta learning model recommendation unseen datasets"
-- "multi objective algorithm selection latency accuracy"
+## Programmatically derived audit counts
 
-### ACL Anthology (direct page verification)
-- PsyMatrix (2024.findings-emnlp.880)
+All counts are strictly derived from `docs/novelty/search_hits.csv`, `docs/novelty/screening_ledger.csv`, and `docs/novelty/literature_matrix.csv`:
 
-### Google Scholar / Semantic Scholar (web search)
-- FrugalGPT Chen Zaharia Zou 2023
-- RouteLLM Ong Ding 2024
-- Hybrid LLM Cost-Efficient Query Routing Ding 2024
-- RouterArena LLM routers benchmark
-- LLMRouterBench massive benchmark routing
-- ModelLens model recommendation
+| Stage | Exact Count | Definition / Source |
+|---|---|---|
+| Raw search hits | 66 | Total rows in `docs/novelty/search_hits.csv` |
+| Unique canonical records after deduplication | 53 | Total rows in `docs/novelty/screening_ledger.csv` |
+| Records screened | 53 | All deduplicated records evaluated against criteria |
+| Records excluded | 18 | Records with `screening_decision != 'included'` |
+| Records included | 35 | Records with `screening_decision == 'included'` (matches `literature_matrix.csv`) |
 
-## Record counts
-
-| Stage | Count |
-|---|---|
-| Records found across all queries | 87 |
-| After deduplication | 54 |
-| Screened (title + abstract review) | 54 |
-| Excluded | 19 |
-| Included in final matrix | 35 |
-
-## Exclusion reasons (for excluded records)
-- 7 papers: purely per-token routing or attention-head routing without model-selection relevance
-- 4 papers: ordinary hyperparameter optimization without task-level transfer
-- 3 papers: unrelated domain (image only, no transferable algorithm-selection theory)
-- 3 papers: duplicate versions of same work (arXiv + peer-reviewed counted once)
-- 2 papers: unverifiable metadata (could not confirm title/authors/venue)
+### Breakdown of excluded records by decision (18 total)
+- `excluded_irrelevant`: 5 (pure mathematics, satellite astrophysics, vision-only architecture, stream outlier detection)
+- `excluded_wrong_selection_level`: 4 (token-level speculative decoding, per-token MoE routing, internal attention head pruning, token sparsification)
+- `excluded_duplicate_version`: 3 (arXiv preprint duplicates superseded by peer-reviewed ACL/ICLR versions)
+- `excluded_metadata_unverifiable`: 3 (unverifiable publisher record or missing persistent repository deposit)
+- `excluded_other`: 3 (standard HPO without cross-task transfer, software framework papers, static domain adaptation)
 
 ## Inclusion criteria
 Papers addressing at least one of:
-- selection from a model or algorithm portfolio
-- model-performance prediction using task or dataset properties
-- text-dataset characterization for model recommendation
-- routing based on quality, cost, or latency
-- structured-output or output-validity enforcement
-- evaluation using oracle performance or selection regret
+- selection from a model or algorithm portfolio;
+- model-performance prediction using task or dataset properties;
+- text-dataset characterization for model recommendation;
+- routing based on quality, cost, or latency;
+- structured-output or output-validity enforcement;
+- evaluation using oracle performance or selection regret.
 
 ## Exclusion criteria
-- papers unrelated to text or transferable algorithm-selection theory
-- purely per-token routing without model-selection relevance
-- ordinary hyperparameter optimization without task-level transfer
-- unverified summaries lacking an accessible original source
-- duplicate versions of the same work
-
-## Screening procedure
-1. Title and abstract screened for relevance to at least one inclusion criterion.
-2. Duplicates removed by matching normalized title + first author + year.
-3. For borderline cases, introduction section was reviewed.
-4. Peer-reviewed version preferred over arXiv preprint when both exist.
+- papers unrelated to text or transferable algorithm-selection theory;
+- purely per-token routing without model-selection relevance;
+- ordinary hyperparameter optimization without task-level transfer;
+- unverified summaries lacking an accessible original source;
+- duplicate versions of the same work (preprints superseded by peer-reviewed versions).
 
 ## Verification levels
 
 | Status | Definition |
 |---|---|
-| fully_verified | Title, complete author list, year, venue, URL/DOI all confirmed from the original publication page. Central methodological claims confirmed from abstract or full text. |
+| fully_verified | Title, complete author list, year, venue, URL/DOI confirmed from the original publication page. Central methodological claims confirmed from abstract or full text. |
 | metadata_verified | Title, authors, year, venue, URL confirmed from an official bibliographic page (arXiv, ACL Anthology, publisher). Content claims not independently confirmed from full text. |
-| partially_verified | Some bibliographic fields confirmed but others rely on secondary sources or search results. |
+| partially_verified | Some bibliographic fields confirmed but others rely on secondary sources. (No included papers remain partially verified in the audited matrix). |
 | unverified | Included based on search results but not independently confirmed at the original source. |
-| excluded_metadata_error | Previously included but removed due to irrecoverable metadata errors (fabricated IDs, wrong authors). |
+| excluded_metadata_error | Previously considered entries removed due to irrecoverable metadata errors. |
 
-## Backward citation method
-For the 10 closest prior work papers, checked reference lists for additional relevant algorithm selection, meta-learning, and routing papers. Added Rice 1976, Brazdil et al. 1994, Pfahringer et al. 2000 through this process.
+## Backward citation process
+For the closest prior work papers (PsyMatrix, ModelLens, LLMRouterBench, RouterBench, FrugalGPT), reference lists were inspected to identify foundational algorithm selection and meta-learning papers.
 
-## Forward citation method
-For PsyMatrix, ModelLens, RouterBench, and FrugalGPT, searched for citing papers on Google Scholar and Semantic Scholar to identify follow-up work.
+## Forward citation process
+Google Scholar and Semantic Scholar forward citations were checked for key anchor papers (PsyMatrix, RouterBench, FrugalGPT, ModelLens).
 
-## Limitations
-- DBLP and Crossref were not directly searched. Coverage of works indexed only there may be incomplete.
-- Some older papers (pre-2000) could not be verified at original publisher pages due to paywall or unavailable digital copies; these are marked partially_verified.
-- Search was conducted on a single date; papers published after 2026-10-03 are not covered.
-- Full text was checked for approximately 15 of the 35 included papers; the remainder were verified from abstracts and metadata only.
-- Industry benchmarks and proprietary routing systems are not covered.
+## Limitations of the search
+- DBLP and Crossref were not directly searched.
+- OpenAlex was only represented indirectly through aggregator results.
+- Commercial proprietary routing APIs (e.g., Unify, Martian, OpenPipe) lack published whitepapers with full empirical data and are not treated as peer-reviewed benchmarks.
